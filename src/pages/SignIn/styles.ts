@@ -40,13 +40,31 @@ export const MainContent = styled.div`
   width: 100%;
   max-width: 320px;
   align-items: stretch;
-  text-align: center;
 
   animation: ${appearFromLeft} 1s;
 
-  h1 {
-    margin-bottom: 24px;
-    color: #666360;
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    h1 {
+      margin-bottom: 24px;
+      color: #666360;
+      align-self: center;
+    }
+
+    a {
+      font-weight: bold;
+      text-decoration: underline;
+      color: #666360;
+
+      transition: color 1s ease-out;
+
+      &:hover {
+        color: ${darken(0.1, "#666360")};
+      }
+    }
   }
 `;
 
@@ -67,6 +85,7 @@ export const CreateRoom = styled.button`
   cursor: pointer;
   border: 0;
   width: 100%;
+  margin-bottom: 24px;
 
   transition: background 1s ease-out;
   &:hover {
@@ -116,6 +135,6 @@ export const GoogleButton = styled.button`
   transition: border 1s ease-out;
 
   &:hover {
-    border: 2px solid ${darken(0.2,"rgb(193, 155, 231)")};
+    border: 2px solid ${darken(0.2, "rgb(193, 155, 231)")};
   }
 `;
