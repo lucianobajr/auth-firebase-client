@@ -1,5 +1,7 @@
 # Getting Started with Create React App
 
+[![Firebase CI](https://github.com/lucianobajr/auth-firebase-client/actions/workflows/ci.yml/badge.svg)](https://github.com/lucianobajr/auth-firebase-client/actions/workflows/ci.yml)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
