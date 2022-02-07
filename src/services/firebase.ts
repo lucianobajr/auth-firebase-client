@@ -2,9 +2,9 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 
-import config from "../config";
+import firebaseConfig from "../config";
 
-firebase.initializeApp(config);
+firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 const database = firebase.database();
