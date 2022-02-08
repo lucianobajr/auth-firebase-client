@@ -5,6 +5,7 @@ export const Container = styled.div``;
 export const Header = styled.header`
   padding: 32px 0;
   background: #28262e;
+  margin-bottom: 80px;
 `;
 
 export const HeaderContent = styled.div`
@@ -46,7 +47,7 @@ export const Profile = styled.div`
     }
     a {
       text-decoration: none;
-      color: #ff9000;
+      color: #999591;
       &:hover {
         opacity: 0.8;
       }

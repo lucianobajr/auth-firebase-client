@@ -1,7 +1,9 @@
-import { shade } from "polished";
-import styled from "styled-components";
+import { darken, shade } from "polished";
+import styled, { css } from "styled-components";
 
 export const Container = styled.div`
+  background: #fff;
+  height: 100vh;
   > header {
     height: 144px;
     background: #28262e;
@@ -27,6 +29,7 @@ export const Content = styled.div`
   justify-content: center;
   margin: -176px auto 0;
   width: 100%;
+
   form {
     margin: 80px 0;
     width: 340px;
@@ -69,7 +72,7 @@ export const AvatarInput = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ff9000;
+    background: #c8e7ff;
     right: 0;
     bottom: 0;
     border: 0;
@@ -84,9 +87,44 @@ export const AvatarInput = styled.div`
       color: #312e38;
     }
     &:hover {
-      background: ${shade(0.2, "#ff9000")};
+      background: ${shade(0.2, "#c8e7ff")};
     }
   }
 `;
 
-export const Button = styled.button``;
+interface ButtonProps {
+  dontTouch: boolean;
+}
+
+export const Button = styled.button<ButtonProps>`
+  margin-top: 8px;
+  height: 50px;
+  border-radius: 8px;
+  font-weight: bold;
+  background: linear-gradient(
+    90deg,
+    rgba(109, 206, 243, 1) 35%,
+    rgba(178, 105, 250, 1) 100%
+  );
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: ${({ dontTouch }) => (dontTouch ? "not-allowed" : "pointer")};
+  border: 0;
+  width: 100%;
+  margin-bottom: 24px;
+
+  transition: background 1s ease-out;
+  ${({ dontTouch }) =>
+    dontTouch === false &&
+    css`
+      &:hover {
+        background: linear-gradient(
+          90deg,
+          ${darken(0.1, "rgba(109,206,243,1)")} 35%,
+          ${darken(0.1, "rgba(178,105,250,1)")} 100%
+        );
+      }
+    `}
+`;

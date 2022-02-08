@@ -7,6 +7,14 @@ interface User {
   name: string;
   email: string | null;
   avatar: string;
+  phone?: string;
+  authType: "google" | "firebase";
+}
+
+interface UpdateUserProps {
+  name: string;
+  email: string;
+  phone?: string;
 }
 
 type AuthContextType = {
@@ -14,6 +22,7 @@ type AuthContextType = {
   signInWithGoogle: () => Promise<void>;
   signInWithFirebase: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  updateUser: (update: UpdateUserProps) => void;
 };
 
 type AuthContextTypeProps = {
@@ -28,7 +37,7 @@ export function AuthContextProvider(props: AuthContextTypeProps) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        const { displayName, photoURL, uid, email } = user;
+        const { displayName, photoURL, uid, email, phoneNumber } = user;
 
         if (!displayName || !photoURL) {
           throw new Error("Missing information from Google Account");
@@ -39,6 +48,8 @@ export function AuthContextProvider(props: AuthContextTypeProps) {
           name: displayName,
           email: email,
           avatar: photoURL,
+          phone: phoneNumber ? phoneNumber : undefined,
+          authType: "google",
         });
       }
     });
@@ -54,7 +65,7 @@ export function AuthContextProvider(props: AuthContextTypeProps) {
     const result = await auth.signInWithPopup(provider);
 
     if (result.user) {
-      const { displayName, photoURL, uid, email } = result.user;
+      const { displayName, photoURL, uid, email, phoneNumber } = result.user;
 
       if (!displayName || !photoURL) {
         throw new Error("Missing information from Google Account");
@@ -65,6 +76,8 @@ export function AuthContextProvider(props: AuthContextTypeProps) {
         name: displayName,
         email,
         avatar: photoURL,
+        phone: phoneNumber ? phoneNumber : undefined,
+        authType: "google",
       });
     }
   }
@@ -73,17 +86,15 @@ export function AuthContextProvider(props: AuthContextTypeProps) {
     const result = await auth.signInWithEmailAndPassword(email, password);
 
     if (result.user) {
-      const { displayName, photoURL, uid, email } = result.user;
-
-      if (!displayName || !photoURL) {
-        throw new Error("Missing information from Google Account");
-      }
+      const { displayName, photoURL, uid, email, phoneNumber } = result.user;
 
       setUser({
         id: uid,
-        name: displayName,
+        name: displayName!,
         email,
-        avatar: photoURL,
+        avatar: photoURL!,
+        phone: phoneNumber ? phoneNumber : undefined,
+        authType: "firebase",
       });
     }
   }
@@ -92,9 +103,27 @@ export function AuthContextProvider(props: AuthContextTypeProps) {
     await auth.signOut();
     setUser({} as User);
   }
+
+  function updateUser(update: UpdateUserProps) {
+    setUser({
+      id: user.id,
+      avatar: user.avatar,
+      name: update.name,
+      email: update.email,
+      phone: update.phone ? update.phone : undefined,
+      authType: user.authType,
+    });
+  }
+
   return (
     <AuthContext.Provider
-      value={{ user, signInWithGoogle, signInWithFirebase, signOut }}
+      value={{
+        user,
+        signInWithGoogle,
+        signInWithFirebase,
+        signOut,
+        updateUser,
+      }}
     >
       {props.children}
     </AuthContext.Provider>

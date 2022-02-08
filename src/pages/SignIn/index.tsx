@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
 import { Spinner } from "react-activity";
+import { toast } from "react-toastify";
 
 interface SignInFormData {
   email: string;
@@ -57,6 +58,7 @@ const SignIn: React.FC = () => {
         await schema.validate(data, { abortEarly: false });
 
         await signInWithFirebase(data.email, data.password);
+        toast("Logado com sucesso!", { type: "success" });
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           const erros = getValidationErrors(error);
@@ -65,8 +67,11 @@ const SignIn: React.FC = () => {
 
           return;
         }
+        toast(String(error), { type: "error" });
       } finally {
-        setIsLoadingFirebase(false);
+        setTimeout(() => {
+          setIsLoadingFirebase(false);
+        }, 5000);
       }
     },
     [signInWithFirebase]
@@ -76,10 +81,13 @@ const SignIn: React.FC = () => {
     setIsLoadingGoogle(true);
     try {
       await signInWithGoogle();
+      toast("Logado com sucesso!", { type: "success" });
     } catch (error) {
-      console.log(error);
+      toast(String(error), { type: "error" });
     } finally {
-      setIsLoadingGoogle(false);
+      setTimeout(() => {
+        setIsLoadingGoogle(false);
+      }, 5000);
     }
   }
 

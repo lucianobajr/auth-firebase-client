@@ -16,6 +16,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useState } from "react";
 
 import { Spinner } from "react-activity";
+import { toast } from "react-toastify";
 
 interface SignInFormData {
   username: string;
@@ -53,8 +54,10 @@ const SignIn: React.FC = () => {
         await schema.validate(data, { abortEarly: false });
 
         await api.post("/user", data);
-
-        history.push("/");
+        toast("O usuário foi criado com sucesso!", { type: "success" });
+        setTimeout(() => {
+          history.push("/");
+        }, 5000);
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           const erros = getValidationErrors(error);
@@ -63,6 +66,7 @@ const SignIn: React.FC = () => {
 
           return;
         }
+        toast(String(error), { type: "error" });
       } finally {
         setIsLoading(false);
       }
