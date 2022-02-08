@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://us-central1-auth-firebase-c1c6c.cloudfunctions.net/api",
+  baseURL: process.env.REACT_APP_API_URL,
 });
 
 export { api };
