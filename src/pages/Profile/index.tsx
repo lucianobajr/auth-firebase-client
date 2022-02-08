@@ -108,7 +108,14 @@ const Profile: React.FC = () => {
           onSubmit={handleSubmit}
         >
           <AvatarInput>
-            <img src={user?.avatar} alt={user?.name} />
+            {user?.avatar ? (
+              <img src={user.avatar} alt={user.name} />
+            ) : (
+              <img
+                src={`https://ui-avatars.com/api/?name=${user?.name}&rounded=true&length=1&background=rgba(178,%20105,%20250,%201)}`}
+                alt={user?.name}
+              />
+            )}
             <label htmlFor="avatar">
               <FiCamera />
               <input type="file" name="" id="avatar" onChange={() => {}} />
